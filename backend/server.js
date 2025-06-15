@@ -7,11 +7,17 @@ const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require("path");
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+
+
+
+
+console.log("PORT:", process.env.PORT );
+console.log("MONGO_URI:", process.env.MONGO_URI);
 connectDB();
 const app = express();
 
-app.use(express.json()); // to accept json data
+app.use(express.json()); // to accept json danpm start
 
 // app.get("/", (req, res) => {
 //   res.send("API Running!");
@@ -53,7 +59,8 @@ const server = app.listen(
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+
     // credentials: true,
   },
 });
